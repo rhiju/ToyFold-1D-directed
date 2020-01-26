@@ -10,7 +10,7 @@ function pairs = secstruct_to_pairs( secstruct );
 %
 % (C) R. Das, Stanford University.
 
-bps = ribodraw_convert_structure_to_bps( secstruct );
+bps = convert_structure_to_bps_TOYFOLD( secstruct );
 pairs = zeros( length(secstruct), 1 );
 for i = 1:size( bps, 1 ); 
     pairs(bps(i,1)) = bps(i,2); 

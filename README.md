@@ -11,8 +11,8 @@ Testing calculations for simple Toyfold RNA folding model in 1D
 * Code up and check quick calculation of tertiary folding free energies
 
 ## Getting started
+* Add to your MATLAB path the directory `scripts/` and all subdirectories 
 * In MATLAB, go into `scripts` and type `runtests` 
-* Add `scripts/` to your MATLAB path
 
 ## Notes
 * The Toyfold model is developed through Notes available in a Google Team Drive -- contact rhiju for notes. 
