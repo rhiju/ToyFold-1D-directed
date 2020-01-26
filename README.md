@@ -10,6 +10,10 @@ Testing calculations for simple Toyfold RNA folding model in 1D
 * Check nearest-neighbor decomposition to quickly calculate free energies for nested secondary structures
 * Code up and check quick calculation of tertiary folding free energies
 
+## Getting started
+* In MATLAB, go into `scripts` and type `runtests` 
+* Add `scripts/` to your MATLAB path
+
 ## Notes
 * The Toyfold model is developed through Notes available in a Google Team Drive -- contact rhiju for notes. 
 * The 'pencil-and-paper' variant of the model (modular helices, strong bending penalty) is being written up into a pedagogical paper by folks in the Das lab.
