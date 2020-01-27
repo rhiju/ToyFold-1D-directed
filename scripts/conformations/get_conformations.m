@@ -25,7 +25,6 @@ x = [];
 %  that records the partner of each bead 
 %  (set to 0 if bead has no partner).
 partner = secstruct_to_partner( secstruct );
-
 N = length( secstruct ); 
 
 % without loss of generality,
@@ -37,16 +36,26 @@ if N > 1;
     x = [0 1]';
 end
 
+stem_assignment = figure_out_stem_assignment( secstruct );
+
 % How about the rest?
 for i = 3:N
     q = size( x, 2 );
-    % two choices for next move -- forward or backward.
-    % add next bead position. Forward:
-    x(i,1:q) = x(i-1,1:q)+1;
-
-    % Backward (note that these are 'new' histories.
-    x(:, (q+1) : 2*q) = x(:,1:q);
-    x(i, (q+1): 2*q)  = x(i-1,(q+1): 2*q)-1;
+    if stem_assignment(i) > 0 && ...
+        stem_assignment(i) == stem_assignment(i-1) && ...
+        stem_assignment(i) == stem_assignment(i-2)
+        % continuing a stem. go in the same direction!
+        d = x(i-1,:) - x(i-2,:); % direction
+        x(i,:) = x(i-1,:)+d;
+    else
+        % two choices for next move -- forward or backward.
+        % add next bead position. Forward:
+        x(i,1:q) = x(i-1,1:q)+1;
+        
+        % Backward (note that these are 'new' histories.
+        x(:, (q+1) : 2*q) = x(:,1:q);
+        x(i, (q+1): 2*q)  = x(i-1,(q+1): 2*q)-1;
+    end
     
     % filter trajectories that obey pairs
     if partner(i) == 0; continue; end;
@@ -60,5 +69,4 @@ num_bends = score_bends( x );
 [~,idx] = sort( num_bends );
 
 x = x(:,idx);
-
 

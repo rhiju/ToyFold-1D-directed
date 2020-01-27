@@ -2,7 +2,8 @@ function pairs = secstruct_to_pairs( secstruct );
 %  pairs = secstruct_to_pairs( secstruct );
 %
 % INPUT:
-%  secstruct = secondary structure in dot-bracket notation
+%  secstruct = secondary structure in dot-parens notation
+%
 % OUTPUT:
 %  pairs     = array of integers with length matching secstruct.
 %                 0 = unpaired 

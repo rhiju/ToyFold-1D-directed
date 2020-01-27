@@ -1,4 +1,5 @@
 function stems = parse_stems_from_bps_TOYFOLD( bps );
+% stems = parse_stems_from_bps_TOYFOLD( bps );
 %
 % lifted from Biers
 % 
