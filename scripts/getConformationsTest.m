@@ -41,3 +41,12 @@ assert( size(x,2) == 2 );
 assert( size(x,1) == 3 );
 assert( size(x,2) == 2 );
 
+
+% mmm doens't look right
+[x,d] = get_conformations( '(.( )..( )....)' );
+assert( length(x) == 126);
+
+[x,d] = get_conformations( '..((.((..((...)))..)..(((...)))....))' );
+assert( length(x) == 4*126*3*3*3*3);
+
+%length( get_conformations( '(..( ))' ) )
