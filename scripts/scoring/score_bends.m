@@ -1,4 +1,4 @@
-function num_bends = score_bends( x );
+function num_bends = score_bends( d );
 %  num_bends = score_bends( x );
 %
 % Take a bunch of conformations and score the number of bends in each
@@ -7,7 +7,7 @@ function num_bends = score_bends( x );
 %
 % INPUT
 %
-% x = [num beads x num conformations] positions of each bead
+% d = [Nbeads x Nconformations] input directions
 %
 % OUTPUT
 %
@@ -15,8 +15,6 @@ function num_bends = score_bends( x );
 %
 % (C) R. Das, Stanford University, 2020
 
-
-d = x(2:end,:) - x(1:(end-1),:);
 num_bends = sum( d(1:end-1,:) ~= d(2:end,:) );
 
 

@@ -1,4 +1,4 @@
-function x = get_conformations( secstruct );
+function [x,d] = get_conformations( secstruct );
 % x = get_conformations( secstruct );
 %
 % Figure out all the conformations (bead positions)
@@ -15,7 +15,8 @@ function x = get_conformations( secstruct );
 % OUTPUT
 %  x = [Nbeads x Nconformations] all sets of conformations.
 %        If there are no base pairs specified, should get
-%        2^(Nbeads-2)   
+%        2^(Nbeads-1)   
+%  d = [Nbeads x Nconformations] input directions
 % 
 % (C) R. Das, Stanford University
 
@@ -31,42 +32,44 @@ N = length( secstruct );
 %  place first bead at x = 0,and point in positive direction. 
 if N > 0;
     x = [0];
-end
-if N > 1;
-    x = [0 1]';
+    d = [1];
 end
 
 stem_assignment = figure_out_stem_assignment( secstruct );
 
 % How about the rest?
-for i = 3:N
-    q = size( x, 2 );
+for i = 2:N
     if stem_assignment(i) > 0 && ...
-        stem_assignment(i) == stem_assignment(i-1) && ...
-        stem_assignment(i) == stem_assignment(i-2)
+        stem_assignment(i) == stem_assignment(i-1)
         % continuing a stem. go in the same direction!
-        d = x(i-1,:) - x(i-2,:); % direction
-        x(i,:) = x(i-1,:)+d;
+        d(i,:) = d(i-1,:);
     else
+        q = size( x, 2 );
         % two choices for next move -- forward or backward.
-        % add next bead position. Forward:
-        x(i,1:q) = x(i-1,1:q)+1;
+        % Forward:
+        d(i,1:q) = 1;
         
-        % Backward (note that these are 'new' histories.
-        x(:, (q+1) : 2*q) = x(:,1:q);
-        x(i, (q+1): 2*q)  = x(i-1,(q+1): 2*q)-1;
+        % Backward (note that these are 'new' histories).
+        x(:, (q+1) : 2*q) = x(:, 1:q);
+        d(:, (q+1) : 2*q) = d(:, 1:q);
+        d(i, (q+1) : 2*q) = -1;
     end
     
-    % filter trajectories that obey pairs
+    x(i,:) = x(i-1,:)+d(i,:);
+    
+    % filter trajectories that obey pairs -- positions are at same level, 
+    %   and going in opposite directions
     if partner(i) == 0; continue; end;
     if partner(i) > i;  continue; end;    
-    gp = find( x(i,:) == x(partner(i),:) );
+    gp = find( x(i,:) == x(partner(i),:) & d(i,:) == -d(partner(i),:) );
     x = x(:,gp);
+    d = d(:,gp);
 end
 
 % re-order trajectories, sorted by the number of bends
-num_bends = score_bends( x );
+num_bends = score_bends( d );
 [~,idx] = sort( num_bends );
 
 x = x(:,idx);
+d = d(:,idx);
 

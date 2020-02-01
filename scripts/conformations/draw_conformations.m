@@ -1,4 +1,4 @@
-function draw_conformations( x, secstruct );
+function draw_conformations( x, d, secstruct );
 % draw_conformations( x, secstruct );
 %
 % Draw out coordinates for conformations.
@@ -10,12 +10,12 @@ function draw_conformations( x, secstruct );
 % (C) R. Das, Stanford University
 if ischar( x )
     secstruct = x;
-    x = get_conformations( secstruct );
+    [x,d] = get_conformations( secstruct );
 end
 N = size( x, 1 ); % number of beads
 Q = size( x, 2 ); % number of conformations
 
-
+% Figure out where to laterally draw beads (z)
 z = [1:N];
 if exist( 'secstruct','var' )
     stem_assignment = figure_out_stem_assignment( secstruct );
