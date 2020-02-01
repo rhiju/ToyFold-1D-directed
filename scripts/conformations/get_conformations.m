@@ -25,7 +25,8 @@ x = [];
 % partner is array with same length as chain
 %  that records the partner of each bead 
 %  (set to 0 if bead has no partner).
-partner = secstruct_to_partner( secstruct );
+[is_chainbreak, secstruct] = parse_out_chainbreak( secstruct );
+[partner] = secstruct_to_partner( secstruct );
 N = length( secstruct ); 
 
 % without loss of generality,
@@ -39,23 +40,38 @@ stem_assignment = figure_out_stem_assignment( secstruct );
 
 % How about the rest?
 for i = 2:N
-    if stem_assignment(i) > 0 && ...
-        stem_assignment(i) == stem_assignment(i-1)
-        % continuing a stem. go in the same direction!
-        d(i,:) = d(i-1,:);
+    if ~is_chainbreak(i-1)
+        if stem_assignment(i) > 0 && ...
+                stem_assignment(i) == stem_assignment(i-1) ...
+                % continuing a stem. go in the same direction!
+            d(i,:) = d(i-1,:);
+        else
+            q = size(x,2);
+            % two choices for next move -- forward or backward.
+            % Forward:
+            d(i,1:q) = 1;
+            
+            % Backward (note that these are 'new' histories).
+            newblock = size(x,2) + [1:q];
+            x(:, newblock) = x(:, 1:q);
+            d(:, newblock) = d(:, 1:q);
+            d(i, newblock) = -1;
+        end
+        x(i,:) = x(i-1,:)+d(i,:);
     else
-        q = size( x, 2 );
-        % two choices for next move -- forward or backward.
-        % Forward:
-        d(i,1:q) = 1;
-        
-        % Backward (note that these are 'new' histories).
-        x(:, (q+1) : 2*q) = x(:, 1:q);
-        d(:, (q+1) : 2*q) = d(:, 1:q);
-        d(i, (q+1) : 2*q) = -1;
+        q = size(x,2);
+        % new strand! can go anywhere! lots of new options to enumerate
+        for xx = -(2*N-1):(2*N-1)
+            for dd = [1 -1];
+                newblock = size(x,2) + [1:q];
+                x(:,newblock) = x(:,1:q);
+                d(:,newblock) = d(:,1:q);
+                x(i,newblock) = xx;
+                d(i,newblock) = dd;
+            end
+        end
     end
     
-    x(i,:) = x(i-1,:)+d(i,:);
     
     % filter trajectories that obey pairs -- positions are at same level, 
     %   and going in opposite directions

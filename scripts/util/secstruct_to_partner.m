@@ -1,4 +1,4 @@
-function pairs = secstruct_to_pairs( secstruct );
+function [pairs,is_chainbreak] = secstruct_to_partner( secstruct );
 %  pairs = secstruct_to_pairs( secstruct );
 %
 % INPUT:
@@ -10,6 +10,8 @@ function pairs = secstruct_to_pairs( secstruct );
 %                >0 = pairing partner
 %
 % (C) R. Das, Stanford University.
+
+[is_chainbreak, secstruct] = parse_out_chainbreak( secstruct );
 
 bps = convert_structure_to_bps_TOYFOLD( secstruct );
 pairs = zeros( length(secstruct), 1 );
