@@ -41,12 +41,35 @@ assert( size(x,2) == 2 );
 assert( size(x,1) == 3 );
 assert( size(x,2) == 2 );
 
-
-% mmm doens't look right
+% test motif expansion
+% 3-way junction
 [x,d] = get_conformations( '(.( )..( )....)' );
-assert( length(x) == 126);
+assert( size(x,2)  == 126);
 
+% secondary structure harboring 3 way junction and other motifs.
 [x,d] = get_conformations( '..((.((..((...)))..)..(((...)))....))' );
-assert( length(x) == 4*126*3*3*3*3);
+assert( size(x,2)  == 4*126*3*3*3*3);
 
-%length( get_conformations( '(..( ))' ) )
+
+% enumerate conformations for a sequence
+[x,d,p] = get_conformations( '','NNN' );
+assert( size(x,1) == 3 );
+assert( size(x,2) == 5 );
+% look for hairpin as 'best' conformation
+assert( all( x(:,1) == [0,1,0]') );
+assert( all( d(:,1) == [1,1,-1]') );
+assert( all( p(:,1) == [3,0,1]') );
+
+[x,d,p] = get_conformations( '','AAA' );
+assert( size(x,1) == 3 );
+assert( size(x,2) == 4 );
+assert( all( p(:) == 0 ) );
+
+[x,d,p] = get_conformations('','UAUUA');
+assert( size(x,1) == 5 );
+% look for hairpin as 'best' conformation
+assert( all( x(:,1) == [0,1,2,1,0]') );
+assert( all( d(:,1) == [1,1,1,-1,-1]') );
+assert( all( p(:,1) == [5,4,0,2,1]') );
+assert( size(x,2) == 28 );
+
