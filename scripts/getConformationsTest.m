@@ -73,3 +73,11 @@ assert( all( d(:,1) == [1,1,1,-1,-1]') );
 assert( all( p(:,1) == [5,4,0,2,1]') );
 assert( size(x,2) == 28 );
 
+
+% pseudoknot
+[x,d,p] = get_conformations( '((..[)).]' );
+assert( all( x == [0,1,2,3,2,1,0,1,2]' ) );
+assert( all( d == [1,1,1,1,-1,-1,-1,1,1]' ) );
+assert( all( p == [7,6,0,0,9,2,1,0,5]' ) );
+
+

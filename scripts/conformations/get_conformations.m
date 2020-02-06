@@ -55,7 +55,7 @@ end
 if N > 0;
     x = [0];
     d = [1];
-    p = [0];
+    p = partner(1);
 end
 
 stem_assignment = figure_out_stem_assignment( secstruct );
