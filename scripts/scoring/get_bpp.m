@@ -1,4 +1,28 @@
 function  bpp = get_bpp(x,d,p,epsilon,delta);
+% bpp = get_bpp(x,d,p,epsilon,delta);
+%
+% Get base pair probability matrix from get_conformations() output of
+%   ensemble of conformations (positions,directions,pairings).
+%
+% INPUT
+%  x = [Nbeads x Nconformations] all sets of conformations.
+%        If there are no base pairs specified, should get
+%        2^(Nbeads-1). First position is always 0.   
+%  d = [Nbeads x Nconformations] input directions (array of +/-1's)
+%  p = [Nbeads x Nconformations] partners  (0 if bead is unpaired,
+%        otherwise index of partner from 1,... Nbeads )
+%  epsilon = energy bonus for each pair (use negative number for bonus), 
+%               units of kT. [Default -2]
+%  delta = energy penalty for each bend (use positive number for penalty), 
+%               units of kT. [Default 1]
+%
+% Output
+% bpp = [Nbeads x Nbeads] matrix of probabilities (from 0 to 1) that  
+%                bead i is paired to bead j in the ensemble.
+%
+% 
+% (C) R. Das, Stanford University
+
 [Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
 N = size(x,1);
 bpp = zeros(N,N);

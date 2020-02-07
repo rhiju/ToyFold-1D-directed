@@ -23,6 +23,15 @@ analyze_sequence('CGAAACCCGAGG');
 You should get something like:
 ![analyze_sequence_example_output.png](assets/analyze_sequence_example_output.png)
 
+* For some other fun examples, try a sequence that does not fold as cleanly into a pseudoknot:
+``` 
+analyze_sequence('CCAAAGGGGACC');
+```
+ Or one that takes advantage of 'lowercase' perfect matches to get the best possible pseudoknot:
+``` 
+analyze_sequence('abXXXcdbaXdc');
+```
+ 
 * For more examples of using scripts, you can check out the unit tests. In MATLAB, go into `scripts` and type `runtests`.
 
 ## Notes

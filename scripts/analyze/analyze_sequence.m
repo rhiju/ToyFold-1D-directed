@@ -1,12 +1,22 @@
 function analyze_sequence( sequence, epsilon, delta );
+% analyze_sequence( sequence );
+% analyze_sequence( sequence, epsilon, delta );
+% 
+% Analyze and plot lowest energy conformations, base pair probability
+%  matrix, and simulated M2seq data for sequence
 %
+% INPUT
+%  sequence = sequence like 'AAACCCGGA'
+%  epsilon = energy bonus for each pair (use negative number for bonus), 
+%               units of kT. [Default -2]
+%  delta = energy penalty for each bend (use positive number for penalty), 
+%               units of kT. [Default 1]
 %
-%
+% (C) R. Das, Stanford University
 
 if ~exist( 'epsilon','var') epsilon = -2; end;
 if ~exist( 'delta','var') delta = 1; end;
 N = length( sequence );
-
 
 [x,d,p] = get_conformations('',sequence);
 
@@ -21,14 +31,6 @@ hold on; plot([0.5:N+0.5],[0.5:N+0.5]); title( ['BPP for ',sequence] );
 colormap( 1 - gray(100));
 
 subplot(2,2,4);
-profile = 1-sum(bpp);
-M2seq = [];
-for n = 1:N
-    sequence_mut = sequence;
-    sequence_mut(n) = strrep(reverse_complement( sequence(n) ),'T','U');
-    [x,d,p] = get_conformations('',sequence_mut);
-    bpp = get_bpp(x,d,p,epsilon,delta);
-    M2seq = [M2seq; 1-sum(bpp)];
-end
+[M2seq, profile] = get_M2seq( sequence );
 imagesc(M2seq); axis image
 hold on; plot([0.5:N+0.5],[0.5:N+0.5]); title( ['BPP for ',sequence] );
