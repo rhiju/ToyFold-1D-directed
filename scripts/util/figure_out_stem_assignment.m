@@ -6,7 +6,18 @@ function stem_assignment = figure_out_stem_assignment( secstruct )
 % OUTPUT
 % stem_assignment = 1XN array, 0 for non-pairs; 1,2,... index for each
 %          stem.
-bps = convert_structure_to_bps_TOYFOLD( secstruct );
+if ischar( secstruct )
+    bps = convert_structure_to_bps_TOYFOLD( secstruct );
+else % assume partner vector is given
+    partner = secstruct;
+    bps = [];
+    for i = 1:length( partner )
+        if partner(i) > i
+            bps = [bps; i, partner(i) ];
+        end
+    end
+end
+
 stems = parse_stems_from_bps_TOYFOLD( bps );
 
 stem_assignment = zeros(1,length(secstruct));

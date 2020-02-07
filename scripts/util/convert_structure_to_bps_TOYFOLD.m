@@ -1,4 +1,4 @@
-function bps = convert_structure_to_bps( structure );
+function bps = convert_structure_to_bps_TOYFOLD( structure );
 %  bps = convert_structure_to_bps( structure );
 %
 %  INPUTS
