@@ -32,7 +32,7 @@ analyze_sequence('CCAAAGGGGACC');
 analyze_sequence('abXXXcdbaXdc');
 ```
  
-* For more examples of using scripts, you can check out the unit tests. In MATLAB, go into `scripts` and type `runtests`.
+* For more examples of using scripts, you can check out the unit tests. In MATLAB, go into `scripts/unittests` and type `runtests`.
 
 ## Notes
 * The Toyfold model is developed through Notes available in a Google Team Drive -- contact rhiju for notes. 
