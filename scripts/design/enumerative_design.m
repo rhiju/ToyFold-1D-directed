@@ -1,8 +1,37 @@
-function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern );
-% enumerative_design( secstruct, pattern );
+function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern, epsilon, delta );
+% [sequences,p_target,x,d,p] = enumerative_design( secstruct [, pattern, epsilon, delta] );
 %
-% enumerative design -- kind of a fail
-% could generalize this pretty easily
+%   Emnumerate over all sequences that could form target secondary
+%    structure (and conform to optional design pattern) and see which ones
+%    fold best.
+%
+% Inputs
+% secstruct = Target secondary structure in dot-parens notation, e.g.
+%                 '((.))'. Give [] or '' if you want
+%                  the secondary structures to be enumerated
+% pattern = [Optional] sequence like AANUU, where characters like 
+%                N,R,Y,W, and S are wild cards, and A,U,C, and G are preserved.
+%                If not specified, code will use ANNNNNN... (note that
+%                first base can be set to A without loss of generality in
+%                current energy model)
+%  epsilon = energy bonus for each pair (use negative number for bonus), 
+%               units of kT. [Default -2]
+%  delta = energy penalty for each bend (use positive number for penalty), 
+%               units of kT. [Default 1]
+%
+%
+% Outputs
+% sequences = all sequences that match secstruct and pattern, ordered
+%              with 'best' design (by p_target) first
+% p_target  = For each sequence, fraction of conformations with target 
+%                secondary structure.
+% x = For each sequence, all sets of conformations.
+%        If there are no base pairs specified, should get
+%        2^(Nbeads-1). First position is always 0.   
+% d = For each sequence, input directions (array of +/-1's)
+% p = For each sequence, partners  (0 if bead is unpaired,
+%        otherwise index of partner from 1,... Nbeads )
+%
 %
 % (C) R. Das, Stanford University, 2020
 N = length( secstruct );

@@ -4,7 +4,16 @@ function ok_sequences = filter_by_secstruct( sequences, secstruct );
 % filter list of sequences to ones that are consistent with target
 % secstruct
 %
+% Inputs:
+% sequences = cell of input sequences
+% secstruct = target secondary structure (dot-parens notation)
 %
+% Output:
+% ok_sequences = cell of sequences, filtered for those that are consistent
+%                  with secstruct.
+%
+% (C) R. Das, Stanford University 2020
+
 bps = convert_structure_to_bps_TOYFOLD( secstruct );
 ok_sequences = {};
 for q = 1:length( sequences )

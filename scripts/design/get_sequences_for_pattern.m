@@ -12,6 +12,7 @@ function sequences = get_sequences_for_pattern( pattern );
 %   sequences = cell of sequence strings.
 %
 % (C) R. Das, Stanford University, 2020
+
 sequences = {};
 N = length( pattern );
 
