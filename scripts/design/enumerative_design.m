@@ -1,4 +1,4 @@
-function enumerative_design( secstruct, pattern );
+function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern );
 % enumerative_design( secstruct, pattern );
 %
 % enumerative design -- kind of a fail

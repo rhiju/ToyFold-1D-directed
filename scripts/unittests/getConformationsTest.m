@@ -1,3 +1,4 @@
+%%
 [x,d] = get_conformations('.....');
 assert( size(x,1) == 5 );
 assert( size(x,2) == 2^4);
@@ -41,6 +42,7 @@ assert( size(x,2) == 2 );
 assert( size(x,1) == 3 );
 assert( size(x,2) == 2 );
 
+%%
 % test motif expansion
 % 3-way junction
 [x,d] = get_conformations( '(.( )..( )....)' );
@@ -50,7 +52,7 @@ assert( size(x,2)  == 126);
 [x,d] = get_conformations( '..((.((..((...)))..)..(((...)))....))' );
 assert( size(x,2)  == 4*126*3*3*3*3);
 
-
+%%
 % enumerate conformations for a sequence
 [x,d,p] = get_conformations( '','NNN' );
 assert( size(x,1) == 3 );
