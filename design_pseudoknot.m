@@ -1,3 +1,5 @@
+%% TODO: parse out into: function design_sequences( secstruct, NNACGNN design string)
+
 %% this is what we're trying to design:
 %secstruct =  '((..[)).]';
 secstruct =  '((...[[)).]]';
