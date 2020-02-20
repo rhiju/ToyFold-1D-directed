@@ -1,4 +1,4 @@
-function analyze_sequence( sequence, epsilon, delta );
+function [x,d,p] = analyze_sequence( sequence, epsilon, delta );
 % analyze_sequence( sequence );
 % analyze_sequence( sequence, epsilon, delta );
 % 
@@ -26,11 +26,11 @@ draw_conformations(x,d,p);
 
 subplot(2,2,2);
 bpp = get_bpp(x,d,p,epsilon,delta);
-imagesc(bpp); axis image
+imagesc(bpp,[0 1]); axis image
 hold on; plot([0.5:N+0.5],[0.5:N+0.5]); title( ['BPP for ',sequence] );
 colormap( 1 - gray(100));
 
 subplot(2,2,4);
 [M2seq, profile] = get_M2seq( sequence );
-imagesc(M2seq); axis image
+imagesc(M2seq,[0 1]); axis image
 hold on; plot([0.5:N+0.5],[0.5:N+0.5]); title( ['BPP for ',sequence] );

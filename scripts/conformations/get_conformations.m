@@ -99,7 +99,6 @@ for i = 2:N
         end
     end
     
-    
     if ~isempty( stem_assignment )
         % filter trajectories that obey user-inputted pairs -- positions are at same level,
         %   and going in opposite directions
