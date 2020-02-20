@@ -22,7 +22,7 @@ N = length( sequence );
 
 clf; 
 subplot(1,2,1); 
-draw_conformations(x,d,p);
+draw_conformations(x,d,p,8,sequence);
 
 subplot(2,2,2);
 bpp = get_bpp(x,d,p,epsilon,delta);

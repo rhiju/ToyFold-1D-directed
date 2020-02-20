@@ -30,9 +30,7 @@ function [Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
 if ~exist( 'epsilon','var') epsilon = -2; end;
 if ~exist( 'delta','var') delta = 1; end;
 
-num_bends = score_bends(d);
-num_pairs = score_pairs(p);
-E = delta * num_bends + epsilon * num_pairs;
+E = get_energy(d,p,epsilon,delta);
 Z = sum( exp( -E ) );
 conf_prob = exp(-E)/Z;
 
