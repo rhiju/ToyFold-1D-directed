@@ -62,9 +62,12 @@ for q = 1:Q
     
     % draw backbone
     plot( z, offset + x(:,q),'.-','linew',2); hold on
-    for n = 1:N
-        rectangle( 'Position', [z(n)-0.25 offset+x(n,q)-0.25 0.5 0.5], 'Curvature',[1,1],...
-            'facecolor',get_eterna_color_TOYFOLD(sequence(n)) );
+
+    if exist( 'sequence', 'var' ) && length( sequence ) > 0
+        for n = 1:N
+            rectangle( 'Position', [z(n)-0.25 offset+x(n,q)-0.25 0.5 0.5], 'Curvature',[1,1],...
+                'facecolor',get_eterna_color_TOYFOLD(sequence(n)) );
+        end
     end
     
     if exist( 'E', 'var' )

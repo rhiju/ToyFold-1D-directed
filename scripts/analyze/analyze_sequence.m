@@ -1,4 +1,4 @@
-function [x,d,p] = analyze_sequence( sequence, epsilon, delta, calc_m2 );
+function [x,d,p,E] = analyze_sequence( sequence, epsilon, delta, calc_m2 );
 % analyze_sequence( sequence );
 % analyze_sequence( sequence, epsilon, delta );
 % 
@@ -27,7 +27,8 @@ clf;
 subplot(1,2,1); 
 draw_conformations(x,d,p,8,sequence,E);
 
-subplot(2,2,2);
+subplot(1,2,2);
+if calc_m2; subplot(2,2,2); end
 bpp = get_bpp(x,d,p,epsilon,delta);
 imagesc(bpp,[0 1]); axis image
 hold on; plot([0.5:N+0.5],[0.5:N+0.5]); title( ['BPP for ',sequence] );
