@@ -1,4 +1,4 @@
-function draw_conformations( x, d, p, max_struct, sequence );
+function draw_conformations( x, d, p, max_struct, sequence, E );
 % draw_conformations( secstruct );
 % draw_conformations( x, d, p, max_struct, sequence );
 %
@@ -19,6 +19,7 @@ function draw_conformations( x, d, p, max_struct, sequence );
 %        otherwise index of partner from 1,... Nbeads )
 %  max_struct = maximum number of structures to plot.
 %  sequence = A,C,G,U sequence
+%  E = Energies for each conformation (for numerical display)
 %
 % (C) R. Das, Stanford University, 2020
 
@@ -36,7 +37,7 @@ N = size( x, 1 ); % number of beads
 Q = size( x, 2 ); % number of conformations
 
 cla;
-spacing = max( max(x) )-min(min(x))+0.5;
+spacing = max( max(x) )-min(min(x))+0.7;
 for q = 1:Q
     offset = spacing*(q-1);
     
@@ -66,6 +67,9 @@ for q = 1:Q
             'facecolor',get_eterna_color_TOYFOLD(sequence(n)) );
     end
     
+    if exist( 'E', 'var' )
+        text( 0,offset,num2str(E(q)),'verticalalign','top');
+    end
     
 end
 set(gcf, 'PaperPositionMode','auto','color','white');

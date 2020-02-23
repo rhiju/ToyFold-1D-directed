@@ -12,8 +12,10 @@ draw_conformations( x(:,idx), d(:,idx), p(:,idx) );
 
 
 %%
+% Higher delta, lower epsilon results in fewer pseudoknots, as expected.
 nts = 'ACGU'; N = 12;
 rand_sequence = nts(randi(4,1,N));
-[x,d,p] = analyze_sequence( rand_sequence );
+epsilon = -1; delta = 2; % try to get more cooperativity
+[x,d,p] = analyze_sequence( rand_sequence, epsilon, delta, 0);
 fprintf('Top conformations are pseudoknot?\n')
 check_pseudoknot(p(:,1:8))
