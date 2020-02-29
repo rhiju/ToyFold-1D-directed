@@ -1,5 +1,5 @@
-function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern, epsilon, delta );
-% [sequences,p_target,x,d,p] = enumerative_design( secstruct [, pattern, epsilon, delta] );
+function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern, params );
+% [sequences,p_target,x,d,p] = enumerative_design( secstruct [, pattern, params] );
 %
 %   Emnumerate over all sequences that could form target secondary
 %    structure (and conform to optional design pattern) and see which ones
@@ -14,10 +14,7 @@ function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern, ep
 %                If not specified, code will use ANNNNNN... (note that
 %                first base can be set to A without loss of generality in
 %                current energy model)
-%  epsilon = energy bonus for each pair (use negative number for bonus), 
-%               units of kT. [Default -2]
-%  delta = energy penalty for each bend (use positive number for penalty), 
-%               units of kT. [Default 1]
+%  params = Energy parameter values for delta, epsilon, etc. [MATLAB struct]
 %
 %
 % Outputs
@@ -36,8 +33,8 @@ function [sequences,p_target,x,d,p] = enumerative_design( secstruct, pattern, ep
 % (C) R. Das, Stanford University, 2020
 N = length( secstruct );
 if ~exist( 'pattern', 'var' ) pattern = ['A',repmat( 'N', 1, N-1 )]; end;
-if ~exist( 'epsilon','var') epsilon = -2; end;
-if ~exist( 'delta','var') delta = 1; end;
+if ~exist( 'params','var') params = get_default_energy_parameters(); end;
+
 assert( length( pattern ) == length( secstruct ) );
 
 sequences = get_sequences_for_pattern( pattern );
@@ -51,7 +48,7 @@ x_target = {}; d_target = {}; p_target = [];
 Z = []; Z_target = [];
 for q = 1:length( sequences )
     sequence = sequences{q};
-    [p_target(q),x{q},d{q},p{q}] = test_design(sequence,secstruct,epsilon,delta);
+    [p_target(q),x{q},d{q},p{q}] = test_design(sequence,secstruct,params);
 end
 [p_sort,idx] = sort( -p_target );
 p_target = p_target( idx );
@@ -65,12 +62,12 @@ colormap( 1 - gray(100));
 clf
 subplot(1,2,1);
 q = 1;
-imagesc( get_bpp(x{q},d{q},p{q},epsilon,delta),[0 1] );
+imagesc( get_bpp(x{q},d{q},p{q},params),[0 1] );
 title( ['Best design\newline',sequences{q},'\newline',num2str(p_target(q))] );
 
 subplot(1,2,2);
 q = length(x);
-imagesc(get_bpp(x{end},d{end},p{end},epsilon,delta),[0 1] );
+imagesc(get_bpp(x{end},d{end},p{end},params),[0 1] );
 title( ['Worst design\newline',sequences{end},'\newline',num2str(p_target(q))] );
 
 

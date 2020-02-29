@@ -1,5 +1,5 @@
-function [p_target,x,d,p] = test_design(sequence,secstruct,epsilon,delta);
-% [p_target,x,d,p] = test_design(sequence,secstruct,epsilon,delta);
+function [p_target,x,d,p] = test_design(sequence,secstruct,params);
+% [p_target,x,d,p] = test_design(sequence,secstruct,params);
 %
 % Main script for testing if a sequence folds well into target 
 %   secondary structure.
@@ -7,11 +7,8 @@ function [p_target,x,d,p] = test_design(sequence,secstruct,epsilon,delta);
 % Inputs
 %  sequence  = sequence like 'AAACCCGGA'
 %  secstruct = target secondary structure in dot parens notation
-%  epsilon = energy bonus for each pair (use negative number for bonus), 
-%               units of kT. [Default -2]
-%  delta = energy penalty for each bend (use positive number for penalty), 
-%               units of kT. [Default 1]
-%
+%  params = Energy parameter values for delta, epsilon, etc. [MATLAB struct]
+
 % Output
 %  p_target = Fraction of conformations with target 
 %                secondary structure. (Higher is better.)
@@ -24,13 +21,12 @@ function [p_target,x,d,p] = test_design(sequence,secstruct,epsilon,delta);
 %
 % (C) Rhiju Das, Stanford University 2020
 
-if ~exist( 'epsilon','var') epsilon = -2; end;
-if ~exist( 'delta','var') delta = 1; end;
+if ~exist( 'params','var') params = get_default_energy_parameters(); end;
 
 [x,d,p] = get_conformations('',sequence);
-Z = get_Z(x,d,p,epsilon,delta);
+Z = get_Z(x,d,p,params);
 
-[x_target,d_target,p_target] = get_conformations(secstruct,sequence);
-Z_target = get_Z(x_target,d_target,p_target,epsilon,delta);
+[x_target,d_target,p_target] = get_conformations(secstruct,sequence,params);
+Z_target = get_Z(x_target,d_target,p_target,params);
 
 p_target = Z_target/Z;

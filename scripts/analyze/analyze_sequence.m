@@ -1,4 +1,4 @@
-function [x,d,p,E] = analyze_sequence( sequence, epsilon, delta, calc_m2 );
+function [x,d,p,E] = analyze_sequence( sequence, params, calc_m2 );
 % analyze_sequence( sequence );
 % analyze_sequence( sequence, epsilon, delta );
 % 
@@ -7,21 +7,16 @@ function [x,d,p,E] = analyze_sequence( sequence, epsilon, delta, calc_m2 );
 %
 % INPUT
 %  sequence = sequence like 'AAACCCGGA'
-%  epsilon = energy bonus for each pair (use negative number for bonus), 
-%               units of kT. [Default -2]
-%  delta = energy penalty for each bend (use positive number for penalty), 
-%               units of kT. [Default 1]
+%  params = Energy parameter values for delta, epsilon, etc. [MATLAB struct]
 %  calc_m2 = do mutate-and-map simulation [default 1]
 %
 % (C) R. Das, Stanford University
 
-if ~exist( 'epsilon','var') epsilon = -2; end;
-if ~exist( 'delta','var') delta = 1; end;
+if ~exist( 'params','var') params = get_default_energy_parameters(); end;
 if ~exist( 'calc_m2','var') calc_m2 = 1; end;
-
 N = length( sequence );
 
-[x,d,p,E] = get_conformations('',sequence,epsilon,delta);
+[x,d,p,E] = get_conformations('',sequence,params);
 
 clf; 
 subplot(1,2,1); 
@@ -29,7 +24,7 @@ draw_conformations(x,d,p,8,sequence,E);
 
 subplot(1,2,2);
 if calc_m2; subplot(2,2,2); end
-bpp = get_bpp(x,d,p,epsilon,delta);
+bpp = get_bpp(x,d,p,params);
 imagesc(bpp,[0 1]); axis image
 hold on; plot([0.5:N+0.5],[0.5:N+0.5]); title( ['BPP for ',sequence] );
 colormap( 1 - gray(100));
