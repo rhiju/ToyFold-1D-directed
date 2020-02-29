@@ -1,4 +1,4 @@
-function  bpp = get_bpp(x,d,p,epsilon,delta);
+function  bpp = get_bpp(x,d,p,params);
 % bpp = get_bpp(x,d,p,epsilon,delta);
 %
 % Get base pair probability matrix from get_conformations() output of
@@ -11,10 +11,7 @@ function  bpp = get_bpp(x,d,p,epsilon,delta);
 %  d = [Nbeads x Nconformations] input directions (array of +/-1's)
 %  p = [Nbeads x Nconformations] partners  (0 if bead is unpaired,
 %        otherwise index of partner from 1,... Nbeads )
-%  epsilon = energy bonus for each pair (use negative number for bonus), 
-%               units of kT. [Default -2]
-%  delta = energy penalty for each bend (use positive number for penalty), 
-%               units of kT. [Default 1]
+%  params = Energy parameter values for delta, epsilon, etc. [MATLAB struct]
 %
 % Output
 % bpp = [Nbeads x Nbeads] matrix of probabilities (from 0 to 1) that  
@@ -22,8 +19,9 @@ function  bpp = get_bpp(x,d,p,epsilon,delta);
 %
 % 
 % (C) R. Das, Stanford University
+if ~exist( 'params','var') params = get_default_energy_parameters(); end;
 
-[Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
+[Z,conf_prob] = get_Z(x,d,p,params);
 N = size(x,1);
 bpp = zeros(N,N);
 for q = 1:size(x,2)

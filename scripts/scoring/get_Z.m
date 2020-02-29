@@ -1,4 +1,4 @@
-function [Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
+function [Z,conf_prob] = get_Z(x,d,p,params);
 % [Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
 %
 % Partition function calculation.
@@ -10,11 +10,7 @@ function [Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
 %  d = [Nbeads x Nconformations] input directions (array of +/-1's)
 %  p = [Nbeads x Nconformations] partners  (0 if bead is unpaired,
 %        otherwise index of partner from 1,... Nbeads )
-%  epsilon = energy bonus for each pair (use negative number for bonus), 
-%               units of kT. [Default -2]
-%  delta = energy penalty for each bend (use positive number for penalty), 
-%               units of kT. [Default 1]
-%
+%  params = Energy parameter values for delta, epsilon, etc. [MATLAB struct]
 %
 % OUTPUT
 % secstruct = Secondary structure in dot-parens notation, e.g.
@@ -27,10 +23,9 @@ function [Z,conf_prob] = get_Z(x,d,p,epsilon,delta);
 % 
 % (C) R. Das, Stanford University, 2020
 
-if ~exist( 'epsilon','var') epsilon = -2; end;
-if ~exist( 'delta','var') delta = 1; end;
+if ~exist( 'params','var') params = get_default_energy_parameters(); end;
 
-E = get_energy(d,p,epsilon,delta);
+E = get_energy(d,p,params);
 Z = sum( exp( -E ) );
 conf_prob = exp(-E)/Z;
 
