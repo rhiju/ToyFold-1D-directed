@@ -4,16 +4,29 @@
 %  a *single* tertiary structure? 
 %
 % Bonafide pseudoknot sequence
-[x,d,p] = analyze_sequence( 'AGAAGCUAC' );
-idx = find( check_pseudoknot(p) );
-E = get_energy(d(:,idx),p(:,idx))
+%%
+epsilon = -2; delta = 1; % original default --> stable
+sequence = 'AGAAGCUAC';
+
+epsilon = -2; delta = 4; % try to get more cooperativity
+sequence = 'CAGAAAAGGGCUGAACCC'; % now need 3-bp to get stable stems
 clf;
-draw_conformations( x(:,idx), d(:,idx), p(:,idx) );
+tic
+[x,d,p,E] = analyze_sequence( sequence, epsilon, delta, 0 );
+
+% NOTE -- alternative structure arises where bottom stem opens.
+
+toc
+%%
+idx = find( check_pseudoknot(p) );
+draw_conformations( x(:,idx), d(:,idx), p(:,idx), 8, sequence );
 
 
 %%
-nts = 'ACGU'; N = 12;
+% Higher delta, lower epsilon results in fewer pseudoknots, as expected.
+nts = 'ACGU'; N = 14;
 rand_sequence = nts(randi(4,1,N));
-[x,d,p] = analyze_sequence( rand_sequence );
+epsilon = -2; delta = 5; % try to get more cooperativity
+[x,d,p] = analyze_sequence( rand_sequence, epsilon, delta, 0);
 fprintf('Top conformations are pseudoknot?\n')
 check_pseudoknot(p(:,1:8))

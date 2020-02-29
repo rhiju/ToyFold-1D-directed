@@ -1,4 +1,4 @@
-function [x,d,p] = get_conformations( secstruct, sequence );
+function [x,d,p,E] = get_conformations( secstruct, sequence, epsilon, delta );
 % [x,d,p] = get_conformations( secstruct, sequence );
 %
 % Figure out all the conformations (bead positions)
@@ -18,7 +18,10 @@ function [x,d,p] = get_conformations( secstruct, sequence );
 % sequence  = [optional] Input sequence (array of 0's and 1's) with
 %                 'colors'. Required if you want secstruct's to be
 %                 enumerated.
-%
+%  epsilon = [optional] energy bonus for each pair (use negative number for bonus), 
+%               units of kT. [Default -2]
+%  delta = [optional] energy penalty for each bend (use positive number for penalty), 
+
 % OUTPUT
 %  x = [Nbeads x Nconformations] all sets of conformations.
 %        If there are no base pairs specified, should get
@@ -26,8 +29,12 @@ function [x,d,p] = get_conformations( secstruct, sequence );
 %  d = [Nbeads x Nconformations] input directions (array of +/-1's)
 %  p = [Nbeads x Nconformations] partners  (0 if bead is unpaired,
 %        otherwise index of partner from 1,... Nbeads )
+%  E = [Nconformations] Energies for each conformation.
 % 
 % (C) R. Das, Stanford University, 2020
+
+if ~exist( 'epsilon','var') epsilon = -2; end;
+if ~exist( 'delta','var') delta = 1; end;
 
 x = [];
 
@@ -154,9 +161,8 @@ for i = 2:N
 end
 
 % re-order trajectories, sorted by the number of bends
-num_bends = score_bends( d );
-num_pairs = score_pairs(p); 
-[~,idx] = sort( num_bends - 2*num_pairs);
+E =  get_energy(d,p,epsilon,delta);
+[E,idx] = sort( E );
 
 x = x(:,idx);
 d = d(:,idx);
