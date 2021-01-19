@@ -3,6 +3,8 @@ Testing calculations for simple Toyfold RNA folding model in 1D
 
 (C) R. Das, Stanford University 2020
 
+**Note**: This is a fork from [DasLab ToyFold](https://github.com/DasLab/ToyFold) that includes a concept of directionality that makes nearest neighbor rules working out cleanly but makes comparison to pencil-and-paper calculations a pain.
+
 ## Features
 * Brute-force enumeration of bead-based model for RNA folding
 * Simple script to display RNA conformations
