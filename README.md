@@ -1,4 +1,4 @@
-# Toyfold 1D
+# Toyfold 1D (directed)
 Testing calculations for simple Toyfold RNA folding model in 1D
 
 (C) R. Das, Stanford University 2020
